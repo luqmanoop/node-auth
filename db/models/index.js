@@ -1,0 +1,2 @@
+// register models
+require('./company')

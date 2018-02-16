@@ -1,10 +1,10 @@
 const express = require('express')
-const appMiddleware = require('./middlewares')
+const appMiddlewares = require('./middlewares')
 const router = require('./routes')
 const app = express()
 
-// App config
-appMiddleware(app)
+require('./db')
+appMiddlewares(app)
 router(app)
 
 const PORT = process.env.PORT || 3000
