@@ -3,4 +3,7 @@ module.exports = (app) => {
   app.get('/', (req, res) => {
     res.send('Hello, world')
   })
+
+  // register auth route
+  require('./auth')(app)
 }
