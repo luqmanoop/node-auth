@@ -24,4 +24,12 @@ companySchema.pre('save', function (next) {
   })
 })
 
+companySchema.methods.verifyPassword = function (userPassword, callback) {
+  bcrypt.compare(userPassword, this.password, (err, isMatch) => {
+    if (err) return callback(err)
+
+    callback(null, isMatch)
+  })
+}
+
 mongoose.model('company', companySchema)
