@@ -1,5 +1,12 @@
 const mongoose = require('mongoose')
 const Company = mongoose.model('company')
+const jwt = require('jwt-simple')
+const {jwtSecret} = require('../../config/keys')
+
+const generateToken = (company) => {
+  const issuedTime = new Date().getTime()
+  return jwt.encode({sub: company.id, iat: issuedTime}, jwtSecret)
+}
 
 exports.signupController = (req, res, next) => {
   const {name = null, email = null, password = null} = req.body || {}
@@ -18,7 +25,7 @@ exports.signupController = (req, res, next) => {
 
     company.save()
     .then(company => {
-      res.json({token: 'aslfaslfjlkaskjfkasjkfa.alkkkdsjfasdfa.akadjkfaksdjfkasdjkf'})
+      res.json({token: generateToken(company)})
     }).catch(err => {
       return next(err)
     })
