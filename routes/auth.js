@@ -1,10 +1,9 @@
-const {signupController} = require('./controllers/authController')
+const {signupController, signinController} = require('./controllers/authController')
 const passport = require('passport')
 
-module.exports = (app) => {
-  app.post('/signin', passport.authenticate('local', {session: false}), function (req, res) {
-    res.send({user: req.user})
-  })
+const requireSignIn = passport.authenticate('local', {session: false})
 
+module.exports = (app) => {
+  app.post('/signin', requireSignIn, signinController)
   app.post('/signup', signupController)
 }
