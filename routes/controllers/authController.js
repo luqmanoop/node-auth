@@ -8,6 +8,10 @@ const generateToken = (company) => {
   return jwt.encode({sub: company.id, iat: issuedTime}, jwtSecret)
 }
 
+exports.signinController = (req, res) => {
+  res.send({token: generateToken(req.user)})
+}
+
 exports.signupController = (req, res, next) => {
   const {name = null, email = null, password = null} = req.body || {}
   if (!name || !email || !password) return res.status(422).send({error: 'please provide company name, email and password.'})
