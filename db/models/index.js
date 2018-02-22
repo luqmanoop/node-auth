@@ -1,2 +1,2 @@
 // register models
-require('./company')
+require('./user')
