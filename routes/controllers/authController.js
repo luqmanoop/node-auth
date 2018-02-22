@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-const Company = mongoose.model('company')
+const User = mongoose.model('user')
 const jwt = require('jwt-simple')
 const {jwtSecret} = require('../../config/keys')
 
-const generateToken = (company) => {
+const generateToken = (user) => {
   const issuedTime = new Date().getTime()
-  return jwt.encode({sub: company.id, iat: issuedTime}, jwtSecret)
+  return jwt.encode({sub: user.id, iat: issuedTime}, jwtSecret)
 }
 
 exports.signinController = (req, res) => {
@@ -14,22 +14,22 @@ exports.signinController = (req, res) => {
 
 exports.signupController = (req, res, next) => {
   const {name = null, email = null, password = null} = req.body || {}
-  if (!name || !email || !password) return res.status(422).send({error: 'please provide company name, email and password.'})
+  if (!name || !email || !password) return res.status(422).send({error: 'please provide email and password.'})
 
-  Company.findOne({email}, (err, existingCompany) => {
+  User.findOne({email}, (err, existingUser) => {
     if (err) return next(err)
 
-    if (existingCompany) return res.status(422).send({error: 'Email already in use.'})
+    if (existingUser) return res.status(422).send({error: 'Email already in use.'})
 
-    const company = new Company({
+    const user = new User({
       email,
       name,
       password
     })
 
-    company.save()
-    .then(company => {
-      res.json({token: generateToken(company)})
+    user.save()
+    .then(user => {
+      res.json({token: generateToken(user)})
     }).catch(err => {
       return next(err)
     })

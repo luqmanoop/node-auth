@@ -1,5 +1,5 @@
 const passport = require('passport')
-const Company = require('mongoose').model('company')
+const User = require('mongoose').model('user')
 const LocalStrategy = require('passport-local').Strategy
 const passportJwt = require('passport-jwt')
 const JwtStrategy = passportJwt.Strategy
@@ -8,15 +8,15 @@ const {jwtSecret} = require('../config/keys')
 
 const localOptions = {usernameField: 'email'}
 passport.use(new LocalStrategy(localOptions, (email, password, done) => {
-  Company.findOne({email}, (err, company) => {
+  User.findOne({email}, (err, user) => {
     if (err) { return done(err) }
-    if (!company) { return done(null, false, {message: 'Invalid email/password'}) }
+    if (!user) { return done(null, false, {message: 'Invalid email/password'}) }
 
-    company.verifyPassword(password, (err, isMatch) => {
+    user.verifyPassword(password, (err, isMatch) => {
       if (err) { return done(err) }
       if (!isMatch) { return done(null, false, {message: 'Invalid email/password'}) }
 
-      return done(null, company)
+      return done(null, user)
     })
   })
 }))
@@ -27,7 +27,7 @@ const jwtOptions = {
 }
 
 passport.use(new JwtStrategy(jwtOptions, (payload, done) => {
-  Company.findById(payload.sub, (err, company) => {
+  User.findById(payload.sub, (err, company) => {
     if (err) { return done(err, false) }
     if (!company) { return done(null, false, {message: 'Authentication failed'}) }
 
