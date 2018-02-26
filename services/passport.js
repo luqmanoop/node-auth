@@ -12,9 +12,9 @@ passport.use(new LocalStrategy(localOptions, (email, password, done) => {
     if (err) { return done(err) }
     if (!user) { return done(null, false, {message: 'Invalid email/password'}) }
 
-    user.verifyPassword(password, (err, isMatch) => {
+    user.verifyPassword(password, (err, passwordMatch) => {
       if (err) { return done(err) }
-      if (!isMatch) { return done(null, false, {message: 'Invalid email/password'}) }
+      if (!passwordMatch) { return done(null, false, {message: 'Invalid email/password'}) }
 
       return done(null, user)
     })
