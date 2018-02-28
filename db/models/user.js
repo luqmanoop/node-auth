@@ -24,6 +24,7 @@ userSchema.pre('save', function (next) {
 userSchema.methods.verifyPassword = function (userPassword, callback) {
   bcrypt.compare(userPassword, this.password, (err, passwordMatch) => {
     if (err) return callback(err)
+    // TODO check if passowrd is empty
 
     callback(null, passwordMatch)
   })
