@@ -1,7 +1,10 @@
-const mongoose = require('mongoose')
-const config = require('../config/keys')
+const mongoose = require('mongoose');
+const config = require('../config/keys');
 
-mongoose.connect(config.database)
-mongoose.Promise = global.Promise
+mongoose.connect(
+  config.database,
+  { useNewUrlParser: true }
+);
+mongoose.Promise = global.Promise;
 // models
-require('./models')
+require('./models');
